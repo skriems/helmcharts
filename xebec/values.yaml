@@ -1,0 +1,180 @@
+# Default values for xebec.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+commonLabels: {}
+
+#
+# Pod / Deployment
+#
+
+image:
+  repository: nginx
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+replicaCount: 1
+updateStrategy:
+  type: RollingUpdate
+
+deployment:
+  annotations: {}
+  labels: {}
+
+pod:
+  annotations: {}
+  labels: {}
+
+  # specify extra volumes attached to the pod
+  extraVolumes: {}
+    # - name: banana
+    #   emptyDir: {}
+  securityContext: {}
+    # fsGroup: 2000
+
+container:
+  ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+      servicePort: 80
+    - containerPort: 443
+      name: https
+      protocol: TCP
+      servicePort: 443
+
+  # custom env settings
+  env: {}
+    # - name: FOO
+    #   value: bar
+
+  # populate env via configMaps and secrets
+  envFrom: {}
+    # - secretRef:
+    #     name: foo
+    # - configMapRef:
+    #     name: foo
+
+  # specify extra volume mounts attached to the container
+  extraVolumeMounts: {}
+    # - name: bananas
+    #   mountPath: /bananas
+
+  securityContext:
+    enabled: false
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+persistence:
+  enabled: false
+  # use an existingClaim
+  existingClaim: ""
+  # specify the name of the volume being attached to the pod
+  volumeName: "data"
+  # specify the mountPath of the volume
+  volumeMountPath: "/data"
+  # default storageClassName -> longhorn
+  storageClassName: longhorn
+  size: 1GiB
+  # finalizers:
+  #   - kubernetes.io/pvc-protection
+  accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+
+#
+# Network
+#
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+#
+# Resources
+#
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+#
+# Misc
+#
+
+#
+# liveness & readiness probes
+# https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+#
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+#
+# Cluster
+#
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

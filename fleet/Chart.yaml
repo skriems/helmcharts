@@ -1,0 +1,7 @@
+apiVersion: v2
+name: fleet
+description: A Library Helm Chart for Sailrs' fleet
+type: library
+
+version: 0.1.0
+appVersion: "0.1.0"

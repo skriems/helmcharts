@@ -1,0 +1,5 @@
+## fleet/common
+## It is required by CI/CD tools and processes.
+## @skip exampleValue
+##
+exampleValue: fleet-chart

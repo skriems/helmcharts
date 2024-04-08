@@ -1,0 +1,33 @@
+apiVersion: v2
+name: xebec
+description: Helm chart for easy deployments
+
+# A xebec (/ˈziːbɛk/ or /zɪˈbɛk/) was a small, fast vessel of the sixteenth to
+# nineteenth centuries, used almost exclusively in the Mediterranean Sea by
+# Barbary pirates. These ships were easy to produce and were cheap, and thus
+# nearly every corsair captain (Raïs) had at least one xebec in his fleet.
+#
+# This Chart is supposed to be a general purpose chart with sane default settings
+# for our kubernetes cluster.
+#
+# Features:
+# - Deployment
+# - Pod
+# - Ingress
+# - Service
+# - ServiceAccount
+# - Persistance
+# - HorizontalPodAutoscaler
+
+dependencies:
+  - name: fleet
+    repository: https://gitlab.com/api/v4/projects/38002555/packages/helm/stable
+    version: 0.1.x
+
+type: application
+
+# This is the chart version.
+version: 1.3.0
+
+# This is the version number of the application being deployed.
+appVersion: "1.0.0"

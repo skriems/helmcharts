@@ -1,0 +1,6 @@
+dependencies:
+- name: fleet
+  repository: https://gitlab.com/api/v4/projects/38002555/packages/helm/stable
+  version: 0.1.0
+digest: sha256:3a1cb81d20b5d5d4f274cb337e101905fc038050a671e834ab4ba642e7c9782a
+generated: "2023-02-26T22:22:52.663605+01:00"
